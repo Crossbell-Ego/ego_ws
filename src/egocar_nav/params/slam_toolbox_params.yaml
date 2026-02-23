@@ -1,0 +1,79 @@
+slam_toolbox:
+  ros__parameters:
+    # =====================================================================
+    # 核心配置與感測器主題 (Core Configuration & Sensor Topics)
+    # =====================================================================
+    odom_frame: odom
+    map_frame: map
+    base_frame: base_footprint # 請確保此參數與您機器人的基礎框架(base frame)一致
+    scan_topic: /scan
+
+    # 重要：在實體硬體上運行時，此參數必須為 false
+    # 在模擬環境(如Gazebo)中，則必須為 true
+    use_sim_time: false
+
+    # =====================================================================
+    # 時間同步與座標變換 (Time Synchronization & TF)
+    # =====================================================================
+    # 重新啟用訊息過濾器。禁用它會隱藏時間同步問題，而不是解決問題。
+    use_message_filter: true
+    
+    # TF 緩衝區的持續時間(秒)。提供更多時間讓 TF 變換可以被找到。
+    tf_buffer_duration: 30.0
+    
+    # 等待 TF 變換的超時時間(秒)。適度增加此值有助於解決 "timestamp is earlier" 的錯誤。
+    transform_timeout: 0.5
+    
+    # 發布 map -> odom 變換的頻率(秒)。設為 0.0 則永不發布。
+    transform_publish_period: 0.05
+
+    # =====================================================================
+    # 地圖生成與更新 (Map Generation & Update)
+    # =====================================================================
+    # 地圖更新的間隔時間(秒)。
+    map_update_interval: 2.0
+    
+    # 地圖解析度 (公尺/像素)。
+    resolution: 0.05
+    
+    # 雷射掃描範圍設定應與您的雷射驅動程式設定匹配或更嚴格。
+    # 根據您的 ydlidar.yaml, range_min: 0.01, range_max: 50.0
+    min_laser_range: 0.15   # 過濾掉非常靠近機器人的雜訊點
+    max_laser_range: 49.0   # 使用略小於最大值，以避免邊緣處不可靠的讀數
+
+    # =====================================================================
+    # 掃描匹配與處理 (Scan Matching & Processing)
+    # =====================================================================
+    # 每 N 筆掃描資料處理一次。1 代表處理每一筆。您的雷射頻率為 10Hz，設定 1 是合適的。
+    throttle_scans: 1
+    
+    # 使用掃描點的質心，這有助於緩解 "expected readings" 讀數不匹配的錯誤。
+    use_scan_barycenter: true
+    use_scan_matching: true
+    
+    # 觸發一次新的掃描匹配所需的最小移動距離(公尺)或旋轉角度(弧度)。
+    # 可避免機器人靜止時仍不斷處理掃描資料。
+    minimum_travel_distance: 0.2
+    minimum_travel_heading: 0.17 # 約 10 度
+
+    # 增加掃描緩衝區大小，有助於在高負載時防止訊息丟失。
+    scan_queue_size: 30
+    scan_buffer_size: 30
+
+    # =====================================================================
+    # 回環檢測 (Loop Closure)
+    # =====================================================================
+    # 為了建立高品質地圖，建議保持啟用。如果遇到問題可暫時禁用。
+    do_loop_closing: true
+    loop_search_maximum_distance: 8.0
+
+    # =====================================================================
+    # 其他模式與插件設定 (Other Modes & Solver)
+    # =====================================================================
+    mode: mapping # 可設定為 mapping 或 localization
+    solver_plugin: solver_plugins::CeresSolver
+    ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
+    ceres_preconditioner: SCHUR_JACOBI
+    ceres_trust_strategy: LEVENBERG_MARQUARDT
+    enable_interactive_mode: true
+

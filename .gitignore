@@ -1,0 +1,25 @@
+# ROS 2 colcon 建置產出 (不需版本控制)
+build/
+install/
+log/
+
+# Python 暫存檔
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# 二進位 PDF 診斷圖 (由 .gv 產生，不需追蹤)
+*.pdf
+
+# 編輯器暫存
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# ROS bag
+*.bag
+*.db3
+
+# 地圖檔 (通常另外管理)
+*.pgm

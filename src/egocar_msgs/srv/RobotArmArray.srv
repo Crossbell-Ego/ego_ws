@@ -1,0 +1,4 @@
+# RobotArmArray.srv
+string apply
+---
+float64[] angles
