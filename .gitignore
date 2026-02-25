@@ -8,7 +8,8 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 
-# 二進位 PDF 診斷圖 (由 .gv 產生，不需追蹤)
+# TF frame 診斷圖與產出 (不需追蹤)
+*.gv
 *.pdf
 
 # 編輯器暫存
